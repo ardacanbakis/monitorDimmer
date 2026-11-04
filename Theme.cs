@@ -115,6 +115,7 @@ internal static class FontFamilies
 
 internal static class Glyphs
 {
+    public const string Heart = "";
     public const string Settings = "";
     public const string Refresh = "";
     public const string Edit = "";

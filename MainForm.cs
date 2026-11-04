@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 
 namespace MonitorDimmer;
 
@@ -149,7 +149,7 @@ internal sealed class MainForm : Form
     /// <summary>
     /// Hide() alone removes the window from the taskbar and Alt+Tab. The original toggled
     /// ShowInTaskbar here, which makes WinForms destroy and recreate the window handle in the
-    /// middle of WM_CLOSE — that is what left the window visible.
+    /// middle of WM_CLOSE â€” that is what left the window visible.
     /// </summary>
     private void HideToTray()
     {
@@ -186,7 +186,7 @@ internal sealed class MainForm : Form
             var item = new ToolStripMenuItem(preset.Name)
             {
                 Checked = IsPresetActive(preset),
-                ShortcutKeyDisplayString = $"{preset.Brightness}% · {SliderRow.DimText(_ui, preset.Dim)}"
+                ShortcutKeyDisplayString = $"{preset.Brightness}% Â· {SliderRow.DimText(_ui, preset.Dim)}"
             };
             item.Click += (_, _) => ApplyPreset(preset);
             _menu.Items.Add(item);
@@ -206,6 +206,13 @@ internal sealed class MainForm : Form
             OpenSettings();
         });
         _menu.Items.Add(settings);
+        var about = new ToolStripMenuItem(T("about"));
+        about.Click += (_, _) => BeginInvoke(() =>
+        {
+            ShowFromTray();
+            OpenSettings(showAbout: true);
+        });
+        _menu.Items.Add(about);
         _menu.Items.Add(new ToolStripSeparator());
         var exit = new ToolStripMenuItem(T("exit"));
         exit.Click += (_, _) => BeginInvoke(ExitApp);
@@ -222,7 +229,7 @@ internal sealed class MainForm : Form
             var hardware = targets.Where(device => device.SupportsHardware).ToList();
             var brightness = hardware.Count > 0 ? $"{T("brightness")} {_masterBrightness}%" : null;
             var dim = $"{T("extraDim")}: {SliderRow.DimText(_ui, _masterDim)}";
-            text += "\n" + string.Join(" · ", new[] { brightness, dim }.Where(part => part is not null));
+            text += "\n" + string.Join(" Â· ", new[] { brightness, dim }.Where(part => part is not null));
         }
 
         _tray.Text = text.Length > 127 ? text[..127] : text;
@@ -280,12 +287,15 @@ internal sealed class MainForm : Form
         var identify = new IconButton(_ui, Glyphs.Identify) { AccessibleName = T("identify") };
         identify.Click += (_, _) => Identify(null);
         _tips.SetToolTip(identify, T("identify"));
-        header.Controls.AddRange([identify, refresh, settings]);
+        var support = new IconButton(_ui, Glyphs.Heart) { AccessibleName = T("support") };
+        support.Click += (_, _) => OpenSettings(showAbout: true);
+        _tips.SetToolTip(support, T("support"));
+        header.Controls.AddRange([support, identify, refresh, settings]);
 
         header.Arrange = surface =>
         {
             var x = surface.Width - _ui.S(16);
-            foreach (var button in new[] { settings, refresh, identify })
+            foreach (var button in new[] { settings, refresh, identify, support })
             {
                 x -= button.Width;
                 button.Location = new Point(x, (surface.Height - button.Height) / 2);
@@ -300,7 +310,7 @@ internal sealed class MainForm : Form
                 g.DrawImage(_headerLogo, _ui.S(20), (surface.Height - _headerLogo.Height) / 2);
             }
 
-            Draw.Text(g, "Monitor Dimmer", _ui.DisplayFont(19), new Rectangle(_ui.S(58), 0, surface.Width - _ui.S(200), surface.Height), _ui.P.Text, _ui.P.Window);
+            Draw.Text(g, "Monitor Dimmer", _ui.DisplayFont(19), new Rectangle(_ui.S(58), 0, surface.Width - _ui.S(240), surface.Height), _ui.P.Text, _ui.P.Window);
         };
         return header;
     }
@@ -546,7 +556,7 @@ internal sealed class MainForm : Form
         _settings.Presets.Add(new Preset { Name = name, Brightness = _masterBrightness, Dim = _masterDim });
         ScheduleSave();
         PopulateStack();
-        ShowTransient($"{name} · {_masterBrightness}% · {SliderRow.DimText(_ui, _masterDim)}");
+        ShowTransient($"{name} Â· {_masterBrightness}% Â· {SliderRow.DimText(_ui, _masterDim)}");
     }
 
     private void TurnOffDim()
@@ -625,7 +635,9 @@ internal sealed class MainForm : Form
 
     // -------------------------------------------------------------- settings
 
-    private void OpenSettings()
+    private void OpenSettings() => OpenSettings(showAbout: false);
+
+    private void OpenSettings(bool showAbout)
     {
         if (OwnedForms.OfType<SettingsForm>().FirstOrDefault() is { } open)
         {
@@ -645,7 +657,7 @@ internal sealed class MainForm : Form
             {
                 Identify(device);
             }
-        });
+        }, showAbout);
 
         if (form.ShowDialog(this) != DialogResult.OK)
         {

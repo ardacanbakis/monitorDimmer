@@ -31,6 +31,7 @@ and run it. No installer and no .NET needed. Put it anywhere you like (for examp
 - **Presets**, extra dim remembered across restarts, non-blocking DDC/CI writes,
   auto refresh on display changes and resume from sleep.
 - Windows 11 look: accent colour, dark mode, per-monitor DPI, 10 languages.
+- **About**: version, links and a donation button (Settings → About, the ♡ button, or the tray menu).
 
 ## Monitor support
 
@@ -64,3 +65,23 @@ Push a version tag and the workflow builds both exes and publishes the release:
 git tag v2.0.1
 git push origin v2.0.1
 ```
+
+## Support
+
+Monitor Dimmer is free for everyone, and I plan to keep it that way. If it made your day a
+little easier and you'd like to support future updates, a small donation would mean a lot:
+
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/ardacanbakis)
+
+## About
+
+Made by [Arda Canbakis](https://ardacanbakis.com)
+
+- [GitHub](https://github.com/ardacanbakis)
+- [LinkedIn](https://linkedin.com/in/ardacanbakis)
+- [Instagram](https://www.instagram.com/arda.canbakiss/)
+- [YouTube](https://www.youtube.com/@arda.canbakis)
+- [Buy me a coffee](https://buymeacoffee.com/ardacanbakis)
+
+Also by me: [HushBar](https://github.com/ardacanbakis/hushBar), a menu bar / tray microphone mute
+([Windows version](https://github.com/ardacanbakis/hushBar-windows)).

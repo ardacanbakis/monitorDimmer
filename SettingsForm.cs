@@ -11,9 +11,13 @@ internal sealed class SettingsForm : Form
     private readonly ToolTip _tips = new();
     private readonly Dictionary<string, TextField> _nameFields = [];
     private RowsCard _presetsCard = null!;
+    private AboutCard _aboutCard = null!;
+    private VStack _stack = null!;
+    private readonly bool _showAbout;
 
-    public SettingsForm(AppSettings settings, IReadOnlyList<DisplayRowInfo> displays, Palette palette, string language, int dpi, Icon icon, Action<string> identify)
+    public SettingsForm(AppSettings settings, IReadOnlyList<DisplayRowInfo> displays, Palette palette, string language, int dpi, Icon icon, Action<string> identify, bool showAbout = false)
     {
+        _showAbout = showAbout;
         _draft = settings.Clone();
         _draft.StartWithWindows = StartupManager.IsEnabled();
         _displays = displays;
@@ -88,6 +92,11 @@ internal sealed class SettingsForm : Form
         _presetsCard = new RowsCard(_ui);
         RebuildPresetRows();
         stack.Controls.Add(_presetsCard);
+
+        stack.Controls.Add(new SectionLabel(_ui, T("about")));
+        _aboutCard = new AboutCard(_ui, _tips);
+        stack.Controls.Add(_aboutCard);
+        _stack = stack;
 
         ResumeLayout(true);
     }
@@ -309,6 +318,17 @@ internal sealed class SettingsForm : Form
     {
         base.OnHandleCreated(e);
         Native.ApplyWindowChrome(this, _ui.P);
+    }
+
+    protected override void OnShown(EventArgs e)
+    {
+        base.OnShown(e);
+        if (_showAbout)
+        {
+            // About is the last section: scroll to the end so the whole card is visible.
+            _stack.PerformLayout();
+            _stack.AutoScrollPosition = new Point(0, _stack.DisplayRectangle.Height);
+        }
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
