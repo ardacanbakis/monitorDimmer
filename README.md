@@ -4,15 +4,19 @@ A small tray app for Windows 10/11 that controls the brightness of every monitor
 real hardware brightness over DDC/CI, plus a software "extra dim" overlay for screens that don't
 support it (TVs, laptop panels, some docks).
 
+[![Download for Windows](https://img.shields.io/badge/Download-MonitorDimmer.exe-4F46E5?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/ardacanbakis/monitorDimmer/releases/latest/download/MonitorDimmer.exe)
+[![Latest release](https://img.shields.io/github/v/release/ardacanbakis/monitorDimmer?style=for-the-badge&label=latest)](https://github.com/ardacanbakis/monitorDimmer/releases/latest)
+
 ## Download
 
-Grab **`MonitorDimmer.exe`** from the [latest release](https://github.com/ardacanbakis/monitorDimmer/releases/latest)
-and run it. No installer and no .NET needed. Put it anywhere you like (for example
-`%LOCALAPPDATA%\Programs\MonitorDimmer`) before turning on *Start with Windows*.
+**[⬇ Download MonitorDimmer.exe](https://github.com/ardacanbakis/monitorDimmer/releases/latest/download/MonitorDimmer.exe)**
+(always the newest version), then run it. No installer and no .NET needed. Put it anywhere you like
+(for example `%LOCALAPPDATA%\Programs\MonitorDimmer`) before turning on *Start with Windows*.
+Release notes and older versions are on the [Releases](https://github.com/ardacanbakis/monitorDimmer/releases) page.
 
 - Windows may say *"Windows protected your PC"* because the exe isn't code-signed.
   Click **More info → Run anyway**.
-- `MonitorDimmer-small-needs-dotnet8.exe` is the same app at under 1 MB, if you already have the
+- [`MonitorDimmer-small-needs-dotnet8.exe`](https://github.com/ardacanbakis/monitorDimmer/releases/latest/download/MonitorDimmer-small-needs-dotnet8.exe) is the same app at under 1 MB, if you already have the
   [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0).
 - Settings are stored in `%LOCALAPPDATA%\MonitorDimmer.Claude\settings.json`.
 
